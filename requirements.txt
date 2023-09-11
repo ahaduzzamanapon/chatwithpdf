@@ -1,6 +1,6 @@
 Flask==2.1.1
 docx2txt==0.8
-langchain==0.0.27
+langchain==0.0.286
 pydantic==1.8.2
 requests==2.26.0
 transformers==4.30.2

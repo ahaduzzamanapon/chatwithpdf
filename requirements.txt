@@ -1,6 +1,6 @@
 
 Flask
-PyPDF2
+pdfplumber
 python-docx
 langchain
 python-dotenv

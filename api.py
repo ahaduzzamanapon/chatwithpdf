@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import os
 import pdfplumber
 import docx
+import langchain
 from langchain.chat_models import ChatOpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings

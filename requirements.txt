@@ -25,7 +25,6 @@ Jinja2
 joblib
 jsonschema
 jsonschema-specifications
-langsmith
 lxml
 markdown-it-py
 MarkupSafe

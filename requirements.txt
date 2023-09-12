@@ -4,6 +4,3 @@ python-docx==0.8.11
 langchain==0.0.251
 python-dotenv==1.0.0
 sentence-transformers==2.2.2
-
-
-

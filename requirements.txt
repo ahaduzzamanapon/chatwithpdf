@@ -1,4 +1,4 @@
-langsmith
+langsmith==0.0.39
 PyPDF2
 Flask
 docx

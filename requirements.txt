@@ -7,7 +7,6 @@ openai
 faiss-cpu
 tenacity
 pydantic
-langsmith
 sqlalchemy
 numexpr
 mypy_extensions

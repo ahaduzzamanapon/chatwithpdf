@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import os
 from PyPDF2 import PdfReader
 import docx
-from openai.models import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS

@@ -11,8 +11,8 @@ from langchain.memory import ConversationBufferMemory
 
 app = Flask(__name__)
 
-# Define a placeholder for your OpenAI API key (replace with your actual key)
-openai_api_key = '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'
+# Define a plapyceholder for your OpenAI API key (replace with your actual key)
+openai_api_key = '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'
 
 # Define the file paths of the files in your local directory
 # Replace these paths with the actual paths of your files
@@ -71,7 +71,7 @@ def initialize_conversation_chain():
     global conversation_chain
     text_chunks = get_text_chunks(read_files(file_paths))
     vector_store = get_vectorstore(text_chunks)
-    llm = ChatOpenAI(openai_api_key=openai_api_key, model_name='gpt-3.5-turbo', temperature=0)
+    llm = ChatOpenAI(openai_api_key=openai_api_key, model_name='gpt-3.5-turbo', temperature=0.1)
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,

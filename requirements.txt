@@ -1,7 +1,13 @@
-langchain
+
 PyPDF2
 Flask
 docx
 sentence-transformers
 openai
 faiss-cpu
+tenacity
+pydantic
+langsmith
+sqlalchemy
+numexpr
+mypy_extensions

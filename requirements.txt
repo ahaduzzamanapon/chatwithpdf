@@ -1,4 +1,5 @@
-
+python_version>=3.8.1,<4.0
+langsmith
 PyPDF2
 Flask
 docx

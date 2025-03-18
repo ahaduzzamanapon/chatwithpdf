@@ -1,4 +1,5 @@
 from zk import ZK
+from flask import Flask, jsonify
 from typing import Type
 from dotenv import load_dotenv
 import requests
@@ -12,16 +13,16 @@ from distutils.util import strtobool
 import logging
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from flask import Flask
 
+# Load environment variables
+load_dotenv()
+
+# Flask app
 app = Flask(__name__)
 
 @app.route("/")
 def home():
     return "ZKTeco Live Capture Service is Running!"
-
-# Load environment variables
-load_dotenv()
 
 # Log file size from .env or default to 10MB
 log_file_size = int(os.getenv('LOG_FILE_SIZE', '10485760').split('#')[0].strip())
@@ -144,53 +145,10 @@ class ZktecoWrapper:
         except Exception as e:
             logger.error(f"Error in send_attendance_request: {str(e)}")
 
-    def connect(self, enable_live_capture=False):
-        
-        if self.zk.is_connect and self.zk.helper.test_ping():
-            
-            return
-        retry_count = 0
-        max_retries_log = 10
-
-        while True:
-            try:
-                self.zk.connect()
-                logger.info("Connected to ZK device successfully")
-                retry_count = 0
-                if enable_live_capture:
-                    self.start_live_capture_thread()
-                self.keepAlive()
-                return
-            except Exception as e:
-                retry_count += 1
-                if retry_count < max_retries_log:
-                    logger.warning(f"Failed to connect to ZK device. Retrying... ({e})")
-                time.sleep(6)
-                continue
-
-    def keepAlive(self):
-        while True:
-            isDeviceAlive = self.zk.helper.test_ping()
-            if not isDeviceAlive:
-                logger.warning("Terminating zkteco-live-capture service.")
-                self.terminate_service()
-                return
-            time.sleep(15)
-
-    def enable_device(self):
-        self.zk.enable_device()
-
-    def disable_device(self):
-        self.zk.disable_device()
-
-    def terminate_service(self):
-        sudo_password = os.environ.get('PASSWORD')
-        command = ["sudo", "-S", "systemctl", "kill", "--signal=SIGHUP", os.environ.get('SERVICE_NAME')]
-        subprocess.run(command, input=sudo_password, check=True, text=True, user=os.environ.get('SUBPROCESS_USER'))
-
-
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    # Read port from environment for Render deployment
+    port = int(os.getenv("PORT", 8000))
+    app.run(host="0.0.0.0", port=port)
 
     devices = [
         {
@@ -204,7 +162,6 @@ if __name__ == "__main__":
     ]
 
     for device in devices:
-        
         ip = device["ip"]
         port = device["port"]
 

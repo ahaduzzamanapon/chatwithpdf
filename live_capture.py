@@ -146,9 +146,7 @@ class ZktecoWrapper:
             logger.error(f"Error in send_attendance_request: {str(e)}")
 
 if __name__ == "__main__":
-    # Read port from environment for Render deployment
-    port = int(os.getenv("PORT", 8000))
-    app.run(host="0.0.0.0", port=port)
+   
 
     devices = [
         {
@@ -176,3 +174,6 @@ if __name__ == "__main__":
             "port": port,
             "verbose": bool(strtobool(os.getenv("FLASK_DEBUG", "false"))),
         }).start()
+     # Read port from environment for Render deployment
+    port = int(os.getenv("PORT", 8000))
+    app.run(host="0.0.0.0", port=port)

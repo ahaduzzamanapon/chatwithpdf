@@ -12,6 +12,13 @@ from distutils.util import strtobool
 import logging
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "ZKTeco Live Capture Service is Running!"
 
 # Load environment variables
 load_dotenv()

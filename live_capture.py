@@ -183,35 +183,30 @@ class ZktecoWrapper:
 
 
 if __name__ == "__main__":
-    from gunicorn.app.base import Application
+    devices = [
+        {
+            "ip": os.environ.get('DEVICE_IP_1'),
+            "port": int(os.environ.get('DEVICE_PORT_1', '4370')),
+        },
+        {
+            "ip": os.environ.get('DEVICE_IP_2'),
+            "port": int(os.environ.get('DEVICE_PORT_2', '4370')),
+        }
+    ]
 
-    class ZktecoApplication(Application):
-        def __init__(self, app, options=None):
-            self.options = options or {}
-            self.application = app
-            super().__init__()
+    for device in devices:
+        
+        ip = device["ip"]
+        port = device["port"]
 
-        def load_config(self):
-            config = dict([(key, value) for key, value in self.options.items()])
-            for key, value in config.items():
-                if key in self.cfg.settings and value is not None:
-                    self.cfg.set(key.lower(), value)
+        if not ip:
+            logger.error("Device IP is not set in environment variables.")
+            continue
 
-        def load(self):
-            return self.application
-
-    app = ZktecoWrapper(ZK, os.environ.get('DEVICE_IP'), port=int(os.environ.get('DEVICE_PORT', '4370')), verbose=bool(strtobool(os.getenv("FLASK_DEBUG", "false"))))
-
-    options = {
-        'bind': '0.0.0.0:5000',
-        'workers': 3,
-        'worker_class': 'sync',
-        'preload_app': True,
-        'timeout': 30,
-        'loglevel': 'info',
-        'accesslog': '-',
-        'errorlog': '-',
-    }
-
-    ZktecoApplication(app, options).run()
-
+        logger.info(f"Starting ZktecoWrapper for device at {ip}:{port}")
+        threading.Thread(target=ZktecoWrapper, kwargs={
+            "zk_class": ZK,
+            "ip": ip,
+            "port": port,
+            "verbose": bool(strtobool(os.getenv("FLASK_DEBUG", "false"))),
+        }).start()
